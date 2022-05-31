@@ -1,0 +1,36 @@
+StreamBuilder(
+        stream: db.collection('todos').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ListView.builder(
+            itemCount: snapshot.data?.docs.length,
+            itemBuilder: (context, int index) {
+              DocumentSnapshot documentSnapshot = snapshot.data.docs[index];
+              return ListTile(
+                title: Text(documentSnapshot['todo']),
+                onTap: () {
+
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return showBottomSheet(context);
+                    },
+                  );
+                },
+                trailing: IconButton(
+                  icon: const Icon(
+                    Icons.delete_outline,
+                  ),
+                  onPressed: () {
+                    // Here We Will Add The Delete Feature
+                  },
+                ),
+              );
+            },
+          );
+        },
+      ),
